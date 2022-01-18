@@ -434,6 +434,14 @@ div.row:nth-child(5){
 }
 
 @media (max-width: 1000px){
+  .title{
+    color: white;
+    font-size: 22px;
+    text-align: center;
+    margin-top: 10%;
+    animation: jump 2s ease-in-out infinite;
+}
+
   .games1,
   .games2{
       margin: 6%;
