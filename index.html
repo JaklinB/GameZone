@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Zone</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="./script.js"></script>
+</head>
+<body>
+    
+    <section class="title">
+        <h1>Game Zone</h1>
+    </section>
+
+    <section class="games1">
+        
+        <div class="game">
+            <img src="./tictactoeicon.png" alt="" style="width:100%; height: 300px;">
+            <h1>Tic Tac Toe</h1>
+            <p>Tic-tac-toe is a game in which two players take turns 
+                in drawing either an ' O' or an ' X' in one square of 
+                a grid consisting of nine squares. The winner is the 
+                first player to get three of the same symbols in a row.</p>
+            <p><button id="tictactoeBtn">Play</button></p>
+          </div> 
+
+          <div class="game">
+            <img src="./memorygameicon.png" alt="" style="width:100%;height: 280px;">
+            <h1>Memory Game</h1>
+            <p>The objective is to collect the most pairs of cards.
+            When a player turns over two cards that do not match, those cards 
+            are turned face down again (in the same position).The trick is to remember 
+            which cards are where. 
+            </p>
+            <p><button id="memoryGameBtn">Play</button></p>
+          </div> 
+
+          <div class="game">
+            <img src="./numpuzzleicon.png" alt="" style="width:100%">
+            <h1>Number Puzzle</h1>
+            <p>This game consists of a frame of numbered square tiles in a random order, 
+              with one tile missing. The missing tile makes the tiles' movement on the 
+              frame possible. You should use the empty space to order the numbers.</p>
+            <p><button id="numPuzzleGameBtn">Play</button></p>
+          </div> 
+
+          
+        
+    </section>
+
+    <section class="games2">
+        
+      
+
+        <div class="game">
+          <img src="./guessflagicon.jpg" alt="" style="width:100%;height: 280px;">
+          <h1>Guess the Flag</h1>
+          <p>Can you guess the country from the flag?Flags help us to identify 
+            different countries around the world. A country's flag is made up of 
+            symbols, colours and sometimes phrases that represent its identity or 
+            character. See if you can pick the country that flag belongs to.
+          </p>
+          <p><button id="guessTheFlagBtn">Play</button></p>
+        </div> 
+
+      
+        <div class="game">
+          <img src="./fastTypeIcon.png" alt="" style="width:100%;height: 280px;">
+          <h1>Speed typing</h1>
+          <p>Check your typing skills! Type each word in 5 seconds to score. 
+            To play again, just type the current word. Your score will reset.
+            For the best results try practicing every day. To type faster, 
+            you need to learn how to position 
+            yourself correctly, use all your fingers, hit the right keys without 
+            looking and avoid making mistakes.
+          </p>
+          <p><button id="fastTypingBtn">Play</button></p>
+        </div> 
+        
+      
+  </section>
+
+    <section class="tictactoeSection">
+        <section class="title">
+            <h1>Tic Tac Toe</h1>
+        </section>
+        <section class="display">
+        <span class="display-player X"></span>'s turn
+        </section>
+        <section class="container">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </section>
+        <section class="display winner hide">
+        </section>
+        <section class="res">
+            <button class="reset">Reset</button>
+        </section>
+    </section>
+
+    <section class="memoryGameSection">
+
+      <h2 class="matchedCards"> Matched cards: <span id="counter"> 0</span> / 6</h2>
+    <div id="boardMG"></div>
+    
+    </section>
+
+    <section class="numPuzzleSection">
+      <div class="puzzle">
+        <div class="grid">
+          <button>1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>5</button>
+          <button>6</button>
+          <button>7</button>
+          <button>8</button>
+          <button>9</button>
+          <button>10</button>
+          <button>11</button>
+          <button>12</button>
+          <button>13</button>
+          <button>14</button>
+          <button>15</button>
+          <button></button>
+        </div>
+  
+        <div class="footer">
+          <span id="move">Move: 100</span>
+          <span id="time">Time: 100</span>
+        </div>
+      </div>
+      <button>Play</button>
+      <h1 class="message">Well done! You did it! </h1>
+    </section>
+
+    <section class="guessTheFlagSection">
+      
+      <div id="quizzie">
+        <section id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./germany.jpg" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Germany</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Belgium</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./italy.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Hungary</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Italy</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./austria.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Australia</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Austria</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./serbia.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Serbia</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Slovenia</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                       <img class="flag" src="./us.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">United Kingdom</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">United States</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./argentina.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Argentina</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Uruguay</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./russia.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Slovakia</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Russia</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./india.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">India</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Iran</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./monaco.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Monaco</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Poland</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./ireland.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Cuba</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Ireland</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./libya.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Liberia</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Libya</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./cyprus.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Cyprus</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Zimbabwe</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./turkey.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Cyprus</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Turkey</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./romania.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Romania</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Chad</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./thailand.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Maldives</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Thailand</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./portugal.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Portugal</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Latvia</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./canada.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Latvia</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Canada</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./colombia.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Ecuador</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Colombia</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./china.jpg" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">China</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Colombia</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="hidden" id="sectionF">
+            <ul class="quiz-step step1 current">
+                <li class="question">
+                    <div class="question-wrap">
+                        <img class="flag" src="./peru.png" alt="">
+                    </div>
+                </li>
+                <li class="quiz-answer low-value" data-quizIndex="2">
+                    <div class="answer-wrap">
+                        <p class="answer-text">San Marino</p>
+                    </div>
+                </li>
+                <li class="quiz-answer high-value" data-quizIndex="4">
+                    <div class="answer-wrap">
+                        <p class="answer-text">Peru</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+
+        <ul id="results">
+            <li class="results-inner">
+                <h1 class="resulttxt"></h1>
+            </li>
+        </ul>
+    </div>
+
+    </section>
+
+    <section class="fastTypingSection">
+      <div class="containerFT">
+
+        <button class="startBtnFT">Start</button>
+  
+        <div class="row">
+        <div class="col">
+          <p class="lead">Type the word in
+          <span class="text-success" id="seconds">5</span> Seconds:</p>
+          <h2 class="display" id="current-word">hello</h2>
+          <input type="text" class="form-control form-control-lg" placeholder="Type here .." id="word-input" autofocus>
+          <h4 id="message"></h4>
+      
+          <div class="row">
+          <div class="col">
+            <h3>Time Left:
+            <span id="timeFT">0</span>
+            </h3>
+          </div>
+          <div class="col">
+            <h3>Score:
+            <span id="score">0</span>
+            </h3>
+          </div>
+          <br><br>
+          <div class="col">
+            <h3>High Score:
+            <span id="highscore">0</span>
+            </h3>
+          </div>
+          </div>
+    
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+        srcGameZone();
+    </script>
+
+</body>
+</html>
