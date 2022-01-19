@@ -1,493 +1,712 @@
-*{
-    padding: 0;
-    margin: 0;
-    background-color: rgb(3, 3, 51);
-    box-sizing: border-box;
-}
+function srcGameZone(){
 
-.title{
-    color: white;
-    font-size: 40px;
-    text-align: center;
-    margin-top: 10%;
-    animation: jump 2s ease-in-out infinite;
-}
+    let gamesSection1 = document.querySelector("body > section.games1");
+    let gamesSection2 = document.querySelector("body > section.games2");
+    let tictactoeBtn = document.querySelector("#tictactoeBtn");
+    let memoryGameBtn = document.querySelector("#memoryGameBtn");
+    let numPuzzleGameBtn = document.querySelector("#numPuzzleGameBtn");
+    let guessTheFlagBtn = document.querySelector("#guessTheFlagBtn");
+    let fastTypingBtn = document.querySelector("#fastTypingBtn");
+    let homePageBtn = document.querySelectorAll('.homePageBtn');
 
-@keyframes jump {
-    20% {
-      text-shadow: 0 -60px #f37121, 0 -140px #da9b9b;
+    homePageBtn.forEach(btn => {
+        btn.addEventListener('click', function goToHomePage(){
+            location.reload();
+        });
+    });
+
+    /* --- Tic Tac Toe --- */
+    tictactoeBtn.addEventListener('click', function tictactoeStart(){
+    document.querySelector("body > section.title").innerHTML='';
+    gamesSection1.style.display= 'none';
+    gamesSection2.style.display= 'none';
+
+
+    document.querySelector("body > section.tictactoeSection").style.display = 'inline';
+
+    const boxes = Array.from(document.querySelectorAll('.box'));
+    const displayPlayer = document.querySelector('.display-player');
+    const resetBtn = document.querySelector("body > section.tictactoeSection > section.res > button");
+    const winnerDisplay = document.querySelector('.winner');
+
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let currPlayer = 'X';
+    let isGameActive = true;
+
+    const PLAYERX_WON = 'PLAYERX_WON';
+    const PLAYERO_WON = 'PLAYERO_WON';
+    const TIE = 'TIE';
+
+    const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+    ];
+
+    function handleResultValidation() {
+        let roundWon = false;
+        for (let i = 0; i <= 7; i++) { // [0;7] winning conditions
+            const winCondition = winningConditions[i]; // curr win condition (from 0 to 7)
+            const a = board[winCondition[0]]; // first line of board
+            const b = board[winCondition[1]]; // second line of board
+            const c = board[winCondition[2]]; // third line of board
+
+            if (a === '' || b === '' || c === '') { // if they're empty
+                continue;
+            }
+
+            if (a === b && b === c) { // if they match
+                roundWon = true;
+                break;
+            }
+
+        }
+
+    if (roundWon) { // if someone win
+            announceWinner(currPlayer === 'X' ? PLAYERX_WON : PLAYERO_WON); // check who win
+            isGameActive = false; // game over
+            return;
+        }
+
+    if (!board.includes(''))
+        announceWinner(TIE);
     }
-    50% {
-      transform: translate(0, 0) rotate(-4deg);
-      text-shadow: 0 0px #76aa92, 0 0px #76aa92;
+
+    const announceWinner = (who) => {
+        switch(who){
+            case PLAYERO_WON:
+                winnerDisplay.innerHTML = '<span class="playerO">O</span> Won';
+                alert('Game Over!');
+                break;
+            case PLAYERX_WON:
+                winnerDisplay.innerHTML = '<span class="playerX">X</span> Won';
+                alert('Game Over!');
+                break;
+            case TIE:
+                winnerDisplay.innerText = 'Tie';
+                alert('Game Over!');
+        }
+        winnerDisplay.classList.remove('hide');
+    };
+
+    const isValidAction = (box) => {
+        if (box.innerText === 'X' || box.innerText === 'O'){
+            return false;
+        }
+
+        return true;
+    };
+
+    const updateBoard =  (index) => {
+        board[index] = currPlayer; 
     }
-    70% {
-      text-shadow: 0 -60px 2px #d54062, 0 50px 2px #8fc0a9;
+
+    const changePlayer = () => {
+        displayPlayer.classList.remove(`player${currPlayer}`);
+        currPlayer = currPlayer === 'X' ? 'O' : 'X';
+        displayPlayer.innerText = currPlayer;
+        displayPlayer.classList.add(`player${currPlayer}`);
     }
-  }
 
-  .games1,
-  .games2{
-      margin: 5%;
-      display: flex;
-  }
-
-  .game{
-    box-shadow: 0 15px 25px 15px rgba(0, 0, 0, 0.548);
-    max-width: 300px;
-    margin: auto;
-    text-align: center;
-    font-family: arial;
-    padding: 1%;
-    background-color: rgba(16, 16, 56, 0.863);
-  }
-
-  .game img{
-    border: 1px solid rgba(255, 255, 255, 0.267);
-    margin-bottom: 1%;
-  }
-
-
-  .game button {
-    border: none;
-    outline: 0;
-    padding: 12px;
-    color: rgb(3, 3, 51);
-    font-weight: bold;
-    background-color: white;
-    text-align: center;
-    cursor: pointer;
-    width: 100%;
-    font-size: 18px;
-    margin: 1%;
-  }
-
-  .game h1,p{
-      color: whitesmoke;
-      padding: 1%;
-      background-color: rgba(16, 16, 56, 0.863);
-  }
-
-
-
-/* --- Tic Tac Toe --- */
-
-  .tictactoeSection{
-      display: none;
-  }
-
-  
-
-.display{
-    color: white;
-    font-size: 30px;
-    text-align: center;
-    margin-top: 3em;
-    margin-bottom: 1.5em;
-}
-
-.hide{
-    display: none;
-}
-
-.container{
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 35% 35% 35%;
-    grid-template-rows: 35% 35% 35%;
-    max-width: 300px;
-}
-
-.box {
-    border: 1px solid white;
-    background-color: rgba(5, 5, 71, 0.822);
-    min-width: 100px;
-    min-height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 50px;
-    cursor: pointer;
-}
-
-.box:hover{
-    background-color: rgba(6, 6, 36, 0.363);
-}
-
-.playerX {
-    color: #d54062;
-}
-
-.playerO {
-    color: #478a6a;
-}
-
-.res {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1em;
-}
-
-.res button {
-    color: white;
-    border: 1px solid white;
-    padding: 8px;
-    border-radius: 8px;
-    font-size: 30px;
-    margin: 1em;
-    padding: 1%;
-    cursor: pointer;
-    box-shadow: 0 15px 25px 15px rgba(0, 0, 0, 0.548);
-}
-
-.res button:hover{
-    background-color: white;
-    color: rgb(5, 5, 71);
-    transform: translateX(0.1em) translateY(0.1em);
-}
-
-.restart {
-    background-color: #498AFB;
-}
-
-#reset {
-    background-color: #FF3860;
-}
-
-
-  /* --- Memory Game --- */
-
-  .memoryGameSection{
-    display: none;
-    width: 700px;
-    height: 700px;
-    margin: auto;
-    flex-wrap: wrap;
-    perspective: 1000px;
-    margin-bottom: 5%;
-  }
-
-  
-  
-  .matchedCards {
-    text-align: center;
-    font-size: 2.5em;
-    color: white;
-    font-weight: bold;
-    text-shadow: -2px 3px #000;
-    margin-bottom: 5px;
-    margin-top: 5%;
-  }
-  
-  #boardMG{
-    width: 620px;
-    height: 530px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    margin: 0px auto;
-  }
-  
-  
-  .cardMG{
-    width: 130px;
-    height: 160px;
-    margin: 10px;
-    float:right;
-    background-image: url("question.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 50% 50%;
-    border-radius: 10px;
-    -moz-box-shadow: -3px 3px 10px #000;
-    -webkit-box-shadow: -3px 3px 10px #000;
-     box-shadow: -3px 3px 10px #000;
-  }
-  
-  
-  .cardMG img{
-    display: none;
-  }
-  
-  .cardMG.image img {
-    display: block;
-  }
-  
-  .image {
-    width: 130px;
-      height: 160px;
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      border-radius: 10px;
+    const userAction = (box, index) => {
+        if(isValidAction(box) && isGameActive) {
+            box.innerText = currPlayer;
+            box.classList.add(`player${currPlayer}`);
+            updateBoard(index);
+            handleResultValidation();
+            changePlayer();
+        }
     }
-  
-  .image.match {
-    width: 130px;
-    height: 160px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-  }
+    
+    const resetBoard = () => {
+        board = ['', '', '', '', '', '', '', '', ''];
+        isGameActive = true;
+        winnerDisplay.classList.add('hide');
 
-  /* --- Number Puzzle --- */
+        if (currPlayer === 'O') {
+            changePlayer();
+        }
 
-  .numPuzzleSection{
-    display: none;
-  }
+        boxes.forEach(box => {
+            box.innerText = '';
+            box.classList.remove('playerX');
+            box.classList.remove('playerO');
+        });
+    }
 
-  .puzzle {
-    box-shadow: 1px 1px 1px rgba(0,0,0,.3);
-    padding: 30px;
-    background: rgba(50, 50, 85, 0.82);
-    border-radius: 5px;
-  }
-  
-  .grid {
-    display: grid;
-    grid-template-columns: 90px 90px 90px 90px;
-    grid-template-rows: 90px 90px 90px 90px;
-    border: 1px solid #100235;
-  }
-  
-  .grid button {
-    background-color: #cfcfcf;
-    color: #aa2242;
-    font-size: 28px;
-    font-weight: bold;
-    border: 1px solid #100235;
-    outline: none;
-    cursor: pointer;
-  }
-  
-  .footer {
-    margin-top: 15px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  body > section.numPuzzleSection > button {
-    border: none;
-    font-size: 30px;
-    font-weight: bold;
-    border-radius: 7px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-    padding: 7px;
-    width: 110px;
-    background-color: #aa2242;
-    color: #cfcfcf;
-    outline: none;
-    cursor: pointer;
-    margin: 2%;
-  }
-  
-  body > section.numPuzzleSection > button:hover {
-    color: #aa2242;
-    background-color: #cfcfcf;
-  }
-  
-  #move, #time {
-    flex: 1;
-    text-align: center;
-    font-size: 40px;
-    color: #c54e6a;
-    font-weight: bold;
-    margin: 1%
-  }
-  
-  .message {
-    color:#cfcfcf;
-    height: 80px;
-  }
+    boxes.forEach( (box, index) => {
+        box.addEventListener('click', () => userAction(box, index));
+    });
 
+    resetBtn.addEventListener('click', resetBoard);
 
+});
 
-/* --- Guess The Flag --- */
+    /* --- Memory Game --- */
+    memoryGameBtn.addEventListener('click', function memoryGameStart(){
+        document.querySelector("body > section.title").innerHTML='';
+        document.querySelector("body > section.title").innerHTML='Memory Game';
+        document.querySelector("body > section.title").style.margin = '6%';
+        document.querySelector("body > section.title").style.fontSize = '55px'; 
+        gamesSection1.style.display= 'none';
+        gamesSection2.style.display= 'none';
 
-.guessTheFlagSection{
-  display: none;
+        document.querySelector("body > section.memoryGameSection").style.display = 'block';
+
+        cardArray=[
+            {text: "A", image: "img1.png"},
+            {text: "A", image: "img1.png"},
+            {text: "B", image: "img2.png"},
+            {text: "B", image: "img2.png"},
+            {text: "C", image: "img3.png"},
+            {text: "C", image: "img3.png"},
+            {text: "D", image: "img4.png"},
+            {text: "D", image: "img4.png"},
+            {text: "E", image: "img5.png"},
+            {text: "E", image: "img5.png"},
+            {text: "F", image: "img6.png"},
+            {text: "F", image: "img6.png"}
+          ];
+          
+          clickedCard=[];
+          matchedCard=[];
+          let countMatch = 0;
+          
+          let shuffleDeck=function(){
+          
+          let currentIndex = 
+          cardArray.length
+          , temporaryValue
+          , randomIndex;
+
+          
+          
+          while (0 !== currentIndex) {
+            
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+          
+            
+            temporaryValue = cardArray[currentIndex];
+            cardArray[currentIndex] = cardArray[randomIndex];
+            cardArray[randomIndex] = temporaryValue;
+          }
+          }
+          
+          shuffleDeck();
+          var board=document.getElementById("boardMG");
+          
+          for(var i=0; i<cardArray.length; i++){
+          
+          
+          var cardsBack=document.createElement("div");
+          cardsBack.classList.add("cardMG");
+          board.appendChild(cardsBack);
+          
+          
+          var images=document.createElement("img");
+          images.src = cardArray[i].image;
+          images.className="image";
+          cardsBack.appendChild(images);
+          
+          
+          cardsBack.addEventListener("click",function(){
+            var card = this;
+            if (clickedCard.length < 2){
+             card.classList.add("image");
+              card.classList.add("match"); 
+              clickedCard.push(card.innerHTML);
+              matchedCard.push(card);
+              
+              if (clickedCard.length === 2){
+                if (clickedCard[0] === clickedCard[1]){
+          
+                    clickedCard=[];
+                    matchedCard=[];
+                    countMatch++;
+                    document.getElementById('counter').innerHTML=countMatch.toString();
+
+                    if(countMatch == 6){
+                        document.getElementById('winsMG').innerHTML='Well done!You matched all the cards!';
+                        document.getElementById('winsMG').style.color = '#fff';
+                        document.getElementById('winsMG').style.textAlign = 'center';
+                    }
+                } else {
+                  
+                  setTimeout(turnOffAllCards, 1000);
+                  for (i=0; i<matchedCard.length; i++){
+                    matchedCard[i].classList.remove("match");
+                  }
+                  matchedCard=[];
+                   
+                }
+              } 
+            } 
+            
+          });
+          } 
+          
+          function turnOffAllCards(){
+          var frontCards = document.querySelectorAll("div.image:not(.match)");
+          for(var i = 0; i < frontCards.length; i++){
+            frontCards[i].classList.remove("image");
+            clickedCard=[];
+          
+          }
+          
+          }
+    });
+
+    /* --- Number Puzzle Game --- */
+    numPuzzleGameBtn.addEventListener('click', function numPuzzleGameStart(){
+        document.querySelector("body > section.title").innerHTML='';
+        document.querySelector("body > section.title").innerHTML='Number Puzzle';
+        document.querySelector("body > section.title").style.margin = '6%';
+        document.querySelector("body > section.title").style.fontSize = '55px'; 
+        gamesSection1.style.display= 'none';
+        gamesSection2.style.display= 'none';
+
+        document.querySelector("body > section.numPuzzleSection").style.display = 'flex';
+        document.querySelector("body > section.numPuzzleSection").style.justifyContent = "center"; 
+        document.querySelector("body > section.numPuzzleSection").style.alignItems= "center";
+        document.querySelector("body > section.numPuzzleSection").style.flexDirection = "column"; 
+
+        class Box {
+
+            constructor(x, y) {
+              this.x = x;
+              this.y = y;
+            }
+          
+            getTopBox() { //the top is in position 0(first) relative to the axis y 
+              if (this.y === 0) return null;
+              return new Box(this.x, this.y - 1);
+            }
+        
+            getBottomBox() { ////the bottom is in position 3(last) relative to the axis y 
+                if (this.y === 3) return null;
+                return new Box(this.x, this.y + 1);
+              }
+          
+            getRightBox() { //the right is in position 3(last) relative to the axis x
+              if (this.x === 3) return null;
+              return new Box(this.x + 1, this.y);
+            }
+          
+            getLeftBox() { //the left is in position 0(first) relative to the axis x
+              if (this.x === 0) return null;
+              return new Box(this.x - 1, this.y);
+            }
+          
+            getPossibleBoxes() { 
+              return [
+                this.getTopBox(),
+                this.getRightBox(),
+                this.getBottomBox(),
+                this.getLeftBox() ]
+            .filter(box => box !== null);
+        }
+          
+            getRandomGenerator() {
+              const nextdoorBoxes = this.getPossibleBoxes();
+              return nextdoorBoxes[Math.floor(Math.random() * nextdoorBoxes.length)];
+            }
+        }  
+          
+        
+        
+        
+          const swap = (grid, box1, box2) => {
+            const temp = grid[box1.y][box1.x];
+            grid[box1.y][box1.x] = grid[box2.y][box2.x];
+            grid[box2.y][box2.x] = temp;
+          };
+          
+          const isSolved = grid => {
+            return (
+              grid[0][0] === 1 &&
+              grid[0][1] === 2 &&
+              grid[0][2] === 3 &&
+              grid[0][3] === 4 &&
+              grid[1][0] === 5 &&
+              grid[1][1] === 6 &&
+              grid[1][2] === 7 &&
+              grid[1][3] === 8 &&
+              grid[2][0] === 9 &&
+              grid[2][1] === 10 &&
+              grid[2][2] === 11 &&
+              grid[2][3] === 12 &&
+              grid[3][0] === 13 &&
+              grid[3][1] === 14 &&
+              grid[3][2] === 15 &&
+              grid[3][3] === 0
+            );
+          };
+          
+          const getRandomGrid = () => {
+            let grid = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 0]];
+          
+            // Shuffle boxes
+            let blankBox = new Box(3, 3);
+            for (let i = 0; i < 1000; i++) {
+              const randomNextdoorBox = blankBox.getRandomGenerator();
+              swap(grid, blankBox, randomNextdoorBox);
+              blankBox = randomNextdoorBox;
+            }
+          
+            if (isSolved(grid)) return getRandomGrid();
+            return grid;
+          };
+          
+          class State {
+            constructor(grid, move, time, status) {
+              this.grid = grid;
+              this.move = move;
+              this.time = time;
+              this.status = status;
+            }
+          
+            static ready() {
+              return new State(
+                [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+                0,
+                0,
+                "ready"
+              );
+            }
+          
+            static start() {
+              return new State(getRandomGrid(), 0, 0, "playing");
+            }
+          }
+          
+          class Game {
+            constructor(state) {
+              this.state = state;
+              this.tickId = null;
+              this.tick = this.tick.bind(this);
+              this.render();
+              this.handleClickBox = this.handleClickBox.bind(this);
+            }
+          
+            static ready() {
+              return new Game(State.ready());
+            }
+          
+            tick() {
+              this.setState({ time: this.state.time + 1 });
+            }
+          
+            setState(newState) {
+              this.state = { ...this.state, ...newState };
+              this.render();
+            }
+          
+            handleClickBox(box) {
+              return function() {
+                const nextdoorBoxes = box.getPossibleBoxes();
+                const blankBox = nextdoorBoxes.find(
+                  nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0
+                );
+                if (blankBox) {
+                  const newGrid = [...this.state.grid];
+                  swap(newGrid, box, blankBox);
+                  if (isSolved(newGrid)) {
+                    clearInterval(this.tickId);
+                    this.setState({
+                      status: "won",
+                      grid: newGrid,
+                      move: this.state.move + 1
+                    });
+                  } else {
+                    this.setState({
+                      grid: newGrid,
+                      move: this.state.move + 1
+                    });
+                  }
+                }
+              }.bind(this);
+            }
+          
+            render() {
+              const { grid, move, time, status } = this.state;
+          
+              // Render grid
+              const newGrid = document.createElement("div");
+              newGrid.className = "grid";
+              for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                  const button = document.createElement("button");
+          
+                  if (status === "playing") {
+                    button.addEventListener("click", this.handleClickBox(new Box(j, i)));
+                  }
+          
+                  button.textContent = grid[i][j] === 0 ? "" : grid[i][j].toString();
+                  newGrid.appendChild(button);
+                }
+              }
+              document.querySelector(".grid").replaceWith(newGrid);
+          
+              // Render button
+              const newButton = document.createElement("button");
+              if (status === "ready") newButton.textContent = "Play";
+              if (status === "playing") newButton.textContent = "Reset";
+              if (status === "won") newButton.textContent = "Play";
+              newButton.addEventListener("click", () => {
+                clearInterval(this.tickId);
+                this.tickId = setInterval(this.tick, 1000);
+                this.setState(State.start());
+              });
+              document.querySelector("body > section.numPuzzleSection > button").replaceWith(newButton);
+          
+              // Render move
+              document.getElementById("move").textContent = `Move: ${move}`;
+          
+              // Render time
+              document.getElementById("time").textContent = `Time: ${time}`;
+          
+              // Render message
+              if (status === "won") {
+                document.querySelector(".message").textContent = "You win!";
+              } else {
+                document.querySelector(".message").textContent = "";
+              }
+            }
+          }
+          
+          const GAME = Game.ready();
+          
+    });
+
+    /* --- Guess The Flag Game --- */
+    guessTheFlagBtn.addEventListener('click', function guessTheFlagStart(){
+        document.querySelector("body > section.title").innerHTML='';
+        document.querySelector("body > section.title").innerHTML='Guess the flag!';
+        gamesSection1.style.display= 'none';
+        gamesSection2.style.display= 'none';
+    
+    
+        document.querySelector("body > section.guessTheFlagSection").style.display = 'inline';
+    
+        let correctAnswers = [
+            "Germany", 
+            "Italy", 
+            "Austria", 
+            "Serbia", 
+            "United States",
+            "Argentina", 
+            "Russia", 
+            "India",
+            "Monaco",
+            "Ireland",
+            "Libya",
+            "Cyprus",
+            "Turkey",
+            "Romania",
+            "Thailand",
+            "Portugal",
+            "Canada",
+            "Colombia",
+            "China",
+            "Peru"
+          ];
+        
+            let numRightAnsw = 0;
+            let index = 0;
+          
+            const buttons = Array.from(document.querySelectorAll(".answer-text"));
+          
+            for (let button of buttons) {
+          
+              button.addEventListener('click', nextQuestion);
+          
+              function nextQuestion(event) {
+          
+                if (correctAnswers.includes(button.textContent)) {
+                  numRightAnsw++
+                }
+          
+                let currentSection = document.querySelectorAll('#sectionF')[index];  
+                currentSection.style.display = 'none'; 
+          
+                if (document.querySelectorAll('#sectionF')[index + 1] !== undefined) { 
+                  let nextSection = document.querySelectorAll('#sectionF')[index + 1];
+                  nextSection.style.display = 'block'; 
+                  index++; 
+                } else {
+                  const results = document.querySelector('#results'); 
+                  results.style.display = "block"; 
+          
+                  if (numRightAnsw < 20 && numRightAnsw != 1 && numRightAnsw != 0) {
+                    document.querySelector("#results h1").textContent = `You got ${numRightAnsw} / 20 correct answers.`; 
+                  }else if(numRightAnsw == 1){
+                    document.querySelector("#results h1").textContent = 'You have only one correct answer! ';
+                  }else if(numRightAnsw == 0){
+                    document.querySelector("#results h1").textContent = 'You have no correct answer! 😔';
+                  } else {
+                    document.querySelector("#results h1").textContent = "Well done! You know the flags!";
+                  }
+                   
+          
+                }
+          
+              }
+          
+            }
+
+    });
+
+    /* --- Fast Typing Game --- */
+    fastTypingBtn.addEventListener('click', function fastTypingStart(){
+    document.querySelector("body > section.title").innerHTML='';
+    gamesSection1.style.display= 'none';
+    gamesSection2.style.display= 'none';
+    
+    document.querySelector("body > section.fastTypingSection").style.display = 'inline';
+
+    let startBtnFT = document.querySelector("body > section.fastTypingSection > div > button");
+
+    startBtnFT.addEventListener('click', init);
+
+    const currentLevel = 5;
+    
+    let time = currentLevel;
+    let score = 0;
+    let isPlaying;
+    
+    const wordInput = document.querySelector('#word-input');
+    const currentWord = document.querySelector('#current-word');
+    const scoreDisplay = document.querySelector('#score');
+    const timeDisplay = document.querySelector('#timeFT');
+    const message = document.querySelector('#message');
+    const seconds = document.querySelector('#seconds');
+    const highscoreDisplay = document.querySelector('#highscore');
+    
+    const words = [
+      'cold',
+      'intelligent',
+      'lucky',
+      'depend',
+      'agreement',
+      'relationship',
+      'campaign',
+      'runaway',
+      'case',
+      'different',
+      'establishment',
+      'opportunity',
+      'employee',
+      'husband',
+      'pattern',
+      'history',
+      'siblings',
+      'investigate',
+      'quickly',
+      'information',
+      'laughter',
+      'newspaper',
+      'health',
+      'forward',
+      'government',
+      'sometimes',
+      'trouble',
+      'understand',
+      'weapon',
+      'wonder',
+      'young'
+    ];
+    
+    
+    function init() {
+      
+      seconds.innerHTML = currentLevel;
+      
+      showWord(words);
+      
+      wordInput.addEventListener('input', startMatch);
+      
+      setInterval(countdown, 1000);
+      
+      setInterval(checkStatus, 50);
+    }
+    
+    
+    function startMatch() {
+      if (matchWords()) {
+        isPlaying = true;
+        time = currentLevel + 1;
+        showWord(words);
+        wordInput.value = '';
+        score++;
+      }
+      
+      
+      if (typeof sessionStorage['highscore'] === 'undefined' || score > sessionStorage['highscore']) {
+        sessionStorage['highscore'] = score;
+      } else {
+        sessionStorage['highscore'] = sessionStorage['highscore'];
+      }
+    
+      
+      if (sessionStorage['highscore'] >= 0) {
+      highscoreDisplay.innerHTML = sessionStorage['highscore'];
+      }
+    
+      
+      if (score === -1) {
+        scoreDisplay.innerHTML = 0;
+      } else {
+        scoreDisplay.innerHTML = score;
+      }
+    }
+    
+    
+    function matchWords() {
+      if (wordInput.value === currentWord.innerHTML) {
+        message.innerHTML = 'Correct!';
+        return true;
+      } else {
+        message.innerHTML = '';
+        return false;
+      }
+    }
+    
+    
+    function showWord(words) {
+      
+      const randIndex = Math.floor(Math.random() * words.length);
+      
+      currentWord.innerHTML = words[randIndex];
+    }
+    
+    
+    function countdown() {
+      
+      if (time > 0) {
+        
+        time--;
+      } else if (time === 0) {
+        
+        isPlaying = false;
+      }
+      
+      timeDisplay.innerHTML = time;
+    }
+    
+    
+    function checkStatus() {
+      if (!isPlaying && time === 0) {
+        message.innerHTML = 'Game Over!';
+        score = -1;
+      }
+    }
+    });
 }
 
-.hidden {
-  display: none;
-}
-
-.flag{
-    width: 250px;
-    height: 200px;
-}
-
-.resulttxt {
-  font-size: 5rem;
-  color: #fff;
-}
-
-
-.answer-text {
-  font-size: 2em;
-}
-
-.resulttxt ,  .answer-text {
-  text-align: center;
-  display: block;
-  width: auto;
-  margin: 1%;
-}
-
-#quizzie {
-  padding: 5% 0;
-}
-#quizzie ul {
-  list-style: none;
-  display: block;
-  width: auto;
-  margin: 2% 2%;
-  padding: 2%;
-  overflow: auto;
-  display: none;
-}
-#quizzie ul.current {
-  display: block;
-}
-#quizzie ul li {
-  display: inline-block;
-  width: 49%;
-  margin-right: 0%;
-  overflow: auto;
-  text-align: center;
-}
-#quizzie ul li.quiz-answer {
-  cursor: pointer;
-}
-#quizzie ul li.question, #quizzie ul li.results-inner {
-  display: block;
-  float: none;
-  width: 100%;
-  text-align: center;
-  margin: 0;
-  margin-bottom: 2%;
-}
-#quizzie ul li.results-inner {
-  padding: 5% 2%;
-}
-#quizzie ul li.results-inner img {
-  width: 250px;
-}
-#quizzie ul li:last-child {
-  margin-right: 0;
-}
-#quizzie .question-wrap, #quizzie .answer-wrap {
-  display: block;
-  padding: 1%;
-  margin: 1em 10%;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-}
-#quizzie .answer-wrap {
-  background: #222F5B;
-  -moz-transition: background-color 0.5s ease;
-  -o-transition: background-color 0.5s ease;
-  -webkit-transition: background-color 0.5s ease;
-  transition: background-color 0.5s ease;
-}
-#quizzie .answer-wrap:hover {
-  background: #0E1A40;
-}
-
-
-/* --- Fast Typing --- */
-
-.fastTypingSection{
-  display: none;
-}
-
-.containerFT{
-  color: #fff;
-  text-align: center;
-  font-size: 170%;
-}
-
-#current-word{
-  margin-top: 2%;
-}
-
-input[type=text] {
-  padding: 1%;
-  width: 20%;
-}
-
-#word-input{
-  color: #fff;
-  font-size: 68%;
-}
-
-div.row:nth-child(5){
-  margin-top: 3%;
-}
-
-.startBtnFT{
-  color: #fff;
-  font-size: 100%;
-  padding: 1%;
-}
-
-@media (max-width: 1000px){
-  .title{
-    color: white;
-    font-size: 22px;
-    text-align: center;
-    margin-top: 10%;
-    animation: jump 2s ease-in-out infinite;
-}
-
-  .games1,
-  .games2{
-      margin: 6%;
-      display: block;
-  }
-
-  .game{
-    margin-top: 20%;
-  }
-
-  .memoryGameSection{
-    margin-top: 20%;
-    width: 405px;
-    height: 489px;
-  }
-  #boardMG{
-    width: 380px;
-  }
-  
-.cardMG{
-  width: 65px;
-  height: 95px;
-}
-
-.cardMG.image{
-  width: 65px;
-  height: 95px;
-}
-
-.cardMG.image img{
-  width: 65px;
-  height: 95px;
-}
-  
-
-  .numPuzzleSection{
-    margin: 10%;
-  }
-
-  .infoBox{
-    width: 340px;
-  }
-
-  .quizBox{
-    width: 90%;
-  }
-  
-}
 
