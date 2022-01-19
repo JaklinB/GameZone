@@ -5,9 +5,15 @@ function srcGameZone(){
     let tictactoeBtn = document.querySelector("#tictactoeBtn");
     let memoryGameBtn = document.querySelector("#memoryGameBtn");
     let numPuzzleGameBtn = document.querySelector("#numPuzzleGameBtn");
-    let quickMathsBtn = document.querySelector("#quickMathsBtn");
     let guessTheFlagBtn = document.querySelector("#guessTheFlagBtn");
     let fastTypingBtn = document.querySelector("#fastTypingBtn");
+    let homePageBtn = document.querySelectorAll('.homePageBtn');
+
+    homePageBtn.forEach(btn => {
+        btn.addEventListener('click', function goToHomePage(){
+            location.reload();
+        });
+    });
 
     /* --- Tic Tac Toe --- */
     tictactoeBtn.addEventListener('click', function tictactoeStart(){
@@ -171,11 +177,13 @@ function srcGameZone(){
           matchedCard=[];
           let countMatch = 0;
           
-          var shuffleDeck=function(){
+          let shuffleDeck=function(){
           
-          var currentIndex = cardArray.length
+          let currentIndex = 
+          cardArray.length
           , temporaryValue
           , randomIndex;
+
           
           
           while (0 !== currentIndex) {
@@ -207,8 +215,6 @@ function srcGameZone(){
           cardsBack.appendChild(images);
           
           
-          
-          
           cardsBack.addEventListener("click",function(){
             var card = this;
             if (clickedCard.length < 2){
@@ -224,6 +230,12 @@ function srcGameZone(){
                     matchedCard=[];
                     countMatch++;
                     document.getElementById('counter').innerHTML=countMatch.toString();
+
+                    if(countMatch == 6){
+                        document.getElementById('winsMG').innerHTML='Well done!You matched all the cards!';
+                        document.getElementById('winsMG').style.color = '#fff';
+                        document.getElementById('winsMG').style.textAlign = 'center';
+                    }
                 } else {
                   
                   setTimeout(turnOffAllCards, 1000);
